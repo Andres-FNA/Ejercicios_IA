@@ -1,58 +1,104 @@
-Proyecto: Integración con Gemini – Ejercicios Prácticos
-Descripción
+Gemini-api para poder usar una API mediante Visual Studio Code usando Gemini IA
+Paso 1: Creación de carpeta y apertura de terminal
 
-Este proyecto contiene tres ejercicios prácticos desarrollados en Python para interactuar con el modelo Gemini de Google mediante su SDK oficial. El objetivo es aplicar conceptos fundamentales de configuración de modelos, uso de system_instruction, manejo de prompts y construcción de sistemas conversacionales con historial.
+Crear una carpeta en la cual usaremos la API que vamos a desarrollar. Esta carpeta se puede crear en cualquier parte del disco, evitando crearla dentro de “Documentos”. La carpeta puede llamarse gemini-api.
+Una vez creada la carpeta, abrimos Visual Studio Code y seleccionamos la carpeta que acabamos de crear. Después de esto, abrimos una nueva terminal dentro de Visual Studio Code.
 
-Los ejercicios están diseñados para reforzar habilidades en integración de APIs de Inteligencia Artificial y diseño de prompts estructurados.
+Paso 2: Creación del entorno virtual
+Ya estando en la terminal, crearemos un entorno virtual. Para ello usamos el siguiente comando:
+En Windows:
+python -m venv env
 
-Requisitos:
-Python 3.9 o superior
-Cuenta en Google AI Studio
-API Key de Gemini
-Archivo .env con la variable:
-GEMINI_API_KEY=tu_api_key_aqui
+En macOS o Linux:
+python3 -m venv env
+Con esto se creará una carpeta llamada env, en la cual se guardarán todos los paquetes que instalemos para este proyecto.
 
-Librerías necesarias:
+Paso 3: Activación del entorno virtual
+En la misma terminal, una vez creado el entorno virtual, debemos activarlo.
+En Windows:
+.\env\Scripts\Activate
+En macOS o Linux:
+source env/bin/activate
+Para comprobar que el entorno está activo existen dos formas:
+Presionar Ctrl + Shift + P, buscar Python: Select Interpreter y verificar que el intérprete seleccionado apunte a env/Scripts.
+Verificar en la terminal que aparezca (env) antes de la ruta del proyecto.
+
+Paso 4: Instalación de librerías y uso del entorno virtual
+Instalaremos las librerías necesarias para trabajar con Gemini y variables de entorno usando el siguiente comando:
 pip install google-genai python-dotenv
+Una vez instaladas las librerías, creamos un archivo donde se guardarán todas las dependencias del proyecto ejecutando:
+pip freeze > requirements.txt
+Luego, creamos un archivo dentro de la carpeta del proyecto llamado prueba_entorno.py, en el cual colocaremos el siguiente código para verificar que el entorno virtual funciona correctamente y que podemos conectarnos a la API de Gemini:
 
-Estructura del Proyecto
-Ejercicio 1 – Conexión y Petición Básica
-Inicializa el cliente de Gemini y realiza una consulta simple relacionada con Inteligencia Artificial. El usuario ingresa la pregunta por teclado y el modelo responde bajo una configuración controlada.
+import os
+from google import genai
+from dotenv import load_dotenv
 
-Conceptos aplicados:
-Inicialización del cliente
-Configuración con GenerateContentConfig
-Uso de system_instruction
-Interacción básica con el modelo
+load_dotenv()
+clave_api = os.getenv("GEMINI_API_KEY")
 
-Evidencia de funcionamiento del ejercicio 1: 
-<img width="1227" height="590" alt="image" src="https://github.com/user-attachments/assets/ba16f3ad-46e9-4d07-9fc3-2e6c6fd88fa0" />
+client = genai.Client(api_key=clave_api)
+
+def ejecutar_consulta():
+print("🚀 Conectando con el motor de Gemini ...")
+try:
+response = client.models.generate_content(
+model="gemini-3-flash-preview",
+contents="Preséntate brevemente como un asistente de IA configurado para apoyar el curso de 'Desarrollo de aplicaciones con IA.'"
+)
+
+    print("\n--- Respuesta Recibida ---")  
+    print(response.text)  
+    print("--------------------------")  
+
+except Exception as e:  
+    print(f"❌ Ocurrió un error en la conexión: {e}")  
 
 
-Ejercicio 2 – Procesador de Textos Inteligente
-Se implementa una función procesar_articulo(texto, tarea) que recibe:
-Un texto
-Una tarea definida por el usuario (ej. resumir, traducir, analizar, profesionalizar, etc.)
-El modelo actúa como un Editor Editorial de prestigio, definido mediante system_instruction, y ejecuta la tarea solicitada sobre el texto proporcionado.
+if name == "main":
+ejecutar_consulta()
 
-Conceptos aplicados:
-Prompt dinámico
-Rol especializado del modelo
-Procesamiento flexible de texto
-Ingeniería de prompts
-Evidencia de funcionamiento del ejercicio 2:
-<img width="1232" height="1016" alt="image" src="https://github.com/user-attachments/assets/b77bd550-058c-4c20-b5df-84a0b41526c4" />
+Paso 5: Creación de la API KEY y configuración de la conexión
+Para obtener la API KEY, ingresamos a Google AI Studio con nuestra cuenta de Google. En la parte inferior izquierda seleccionamos la opción Get API key, luego hacemos clic en Create API key, asignamos un nombre a la clave y finalmente la creamos.
 
-Ejercicio 3 – Chat de Soporte con Historial (Few-Shot)
-Construcción de un sistema conversacional para una tienda de tecnología.
+Paso 6: Configuración de variables de entorno
+En la carpeta raíz del proyecto creamos un archivo llamado .env. Dentro de este archivo colocamos nuestra API KEY de la siguiente manera:
+GEMINI_API_KEY=TU_API_KEY_DE_GEMINI
+Después de agregar la clave, actualizamos el archivo de dependencias ejecutando nuevamente:
+pip freeze > requirements.txt
 
-Características:
-Rol definido como vendedor amable
-Historial precargado (few-shot learning)
-Interacción continua hasta que el usuario escriba "finalizar"
-Conceptos aplicados:
-Conversación multi-turno
-Contexto previo (few-shot prompting)
-Simulación de caso real de negocio
-Evidencia de funcionamiento del ejercicio 3:<img width="1212" height="824" alt="image" src="https://github.com/user-attachments/assets/36de5398-84ae-418b-b4f9-ca380ecd5659" />
+Paso 7: Funcionamiento de la API de IA con Gemini
+Creamos un archivo en la raíz del proyecto llamado app_gemini.py y copiamos el siguiente código:
 
+import os
+from google import genai
+from dotenv import load_dotenv
+
+load_dotenv()
+clave_api = os.getenv("GEMINI_API_KEY")
+
+client = genai.Client(api_key=clave_api)
+
+def ejecutar_consulta():
+print("🚀 Conectando con el motor de Gemini ...")
+try:
+response = client.models.generate_content(
+model="gemini-3-flash-preview",
+contents="Preséntate brevemente como un asistente de IA configurado para apoyar el curso de 'Desarrollo de aplicaciones con IA.'"
+)
+
+    print("\n--- Respuesta Recibida ---")  
+    print(response.text)  
+    print("--------------------------")  
+
+except Exception as e:  
+    print(f"❌ Ocurrió un error en la conexión: {e}")  
+
+
+if name == "main":
+ejecutar_consulta()
+
+En este código importamos la librería google-genai, la cual utilizamos para conectarnos al modelo de Gemini, y python-dotenv, que nos permite leer la clave almacenada en el archivo .env.
+Luego cargamos la variable de entorno que contiene la API KEY, inicializamos el cliente de Gemini y creamos una función que envía una petición al modelo gemini-3-flash-preview. El texto enviado corresponde al prompt, que en este caso solicita una presentación breve del asistente de IA.
+
+<img width="1919" height="1002" alt="image" src="https://github.com/user-attachments/assets/f04dc5a3-09c0-4c77-816e-3e6287a13e1e" />
